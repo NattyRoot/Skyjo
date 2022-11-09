@@ -96,4 +96,14 @@ public class SkyjoBoard {
         discardPile.add(deck.get(0));
         deck.remove(0);
     }
+
+    public void fromDeckToDiscardPile() {
+        discardPile.add(deck.get(0));
+        deck.remove(0);
+    }
+
+    public void fromPlayerFieldToDiscard(int playerNum, int row, int col, SkyjoCard newCard) {
+        discardPile.add(playerField.get(playerNum)[col][row]);
+        playerField.get(playerNum)[col][row] = newCard;
+    }
 }
