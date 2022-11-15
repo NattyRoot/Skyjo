@@ -1,15 +1,9 @@
 package com.example.application.views.main;
 
-import com.example.application.skyjo.logic.SkyjoLogic;
-import com.example.application.skyjo.model.SkyjoBoard;
 import com.example.application.views.SkyjoView;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.page.Page;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
