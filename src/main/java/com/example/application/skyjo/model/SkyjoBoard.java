@@ -31,9 +31,14 @@ public class SkyjoBoard {
 
         printPlayersFields();
 
-        firstDiscard();
+        discardPile.discard(deck.draw());
     }
 
+    /**
+     * Distribue les cartes de chaques joueurs
+     *
+     * @param playerCount nombre de joueur dans la partie
+     */
     public void deal(int playerCount) {
         // Rempli les deck ligne par ligne en alternant les joueurs
         for (int playerNum = 0; playerNum < playerCount; playerNum++) {
@@ -47,10 +52,10 @@ public class SkyjoBoard {
         }
     }
 
-    private void firstDiscard() {
-        discardPile.discard(deck.draw());
-    }
-
+    /**
+     * DEBUG USE ONLY<br>
+     * Affiche le board de chaque joueurs
+     */
     public void printPlayersFields() {
         playersField.forEach(field -> {
             System.out.println(field.toString());

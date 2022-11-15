@@ -6,22 +6,26 @@ import com.example.application.skyjo.model.SkyjoPlayerField;
 import com.example.application.views.components.SkyjoPlayerFieldComponent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 
 import java.util.List;
+import java.util.Map;
 
 @PageTitle("Skyjo")
-@Route(value = "skyjo")
-public class SkyjoView extends HorizontalLayout {
-    private final SkyjoBoard board;
+@Route(value = "skyjo/:playerCount?")
+public class SkyjoView extends HorizontalLayout implements HasUrlParameter<String> {
+    private SkyjoBoard board;
     private List<SkyjoPlayerFieldComponent> playerFieldsComponents;
     private Button drawButton;
     private Button discardButton;
     private SkyjoCard selectedCard;
 
     public SkyjoView() {
-        board = new SkyjoBoard(2);
+    }
+
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, String playerCount) {
+        board = new SkyjoBoard(Integer.parseInt(playerCount));
 
         /** FIELD EVENTS **/
         initBoard();
@@ -115,7 +119,15 @@ public class SkyjoView extends HorizontalLayout {
                 int currentColumn = col;
                 int currentRow = row;
                 SkyjoCard card = playerField.getField()[col][row];
-                Button button = card.getButton();
+                Button button = new Button();
+
+                if (card.isVisible()) {
+                    button.setClassName("color-" + card.getColor());
+                    button.setText(card.toString());
+                } else {
+                    button.setText("?");
+                }
+
                 button.addClickListener(event -> {
                     if (selectedCard != null) {
                         System.out.println("Changing value of [" + currentColumn + "][" + currentRow + "] to value " + selectedCard.getValue() + " for player " + playerField.getPlayerNum());
@@ -126,18 +138,12 @@ public class SkyjoView extends HorizontalLayout {
                         board.getDiscardPile().discard(card);
 
                         if (playerField.checkForClearColumn(currentColumn)) {
-                            SkyjoCard[] discardedCol = playerField.discardCol(currentColumn);
-                            for (SkyjoCard discarded : discardedCol) {
-                                board.getDiscardPile().discard(discarded);
-                            }
-                            // Rafraichissement de tout le field
-                            reloadBoard();
-
-                            board.printPlayersFields();
+                            clearColumn(playerField, currentColumn);
                         } else {
                             // Rafraichissement de la carte
                             setButtonStyle(button, selectedCard.getColor(), selectedCard.toString());
-                            reloadBoard();
+                            // Rafraichissement de toute la vue
+                            reloadView();
                         }
 
                         // Rafraichissement de la pioche et de la défausse
@@ -152,19 +158,28 @@ public class SkyjoView extends HorizontalLayout {
                         card.setVisible(true);
 
                         if (playerField.checkForClearColumn(currentColumn)) {
-                            SkyjoCard[] discardedCol = playerField.discardCol(currentColumn);
-                            for (SkyjoCard discarded : discardedCol) {
-                                board.getDiscardPile().discard(discarded);
-                            }
-                            // Rafraichissement de tout le field
-                            reloadBoard();
-
-                            board.printPlayersFields();
+                           clearColumn(playerField, currentColumn);
                         }
                     }
                 });
+                card.setButton(button);
             }
         }
+    }
+
+    /**
+     * Lorsqu'une colonne contient 3 carte identique, on la supprime du field
+     *
+     * @param playerField le player field à modifier
+     * @param col l'index de la colonne à supprimer
+     */
+    private void clearColumn(SkyjoPlayerField playerField, int col) {
+        SkyjoCard[] discardedCol = playerField.discardCol(col);
+        for (SkyjoCard discarded : discardedCol) {
+            board.getDiscardPile().discard(discarded);
+        }
+        // Rafraichissement de toute la vue
+        reloadView();
     }
 
     /**
@@ -183,7 +198,7 @@ public class SkyjoView extends HorizontalLayout {
     /**
      * Supprime puis ajoute les composant de la vue afin d'afficher les modifications
      */
-    private void reloadBoard() {
+    private void reloadView() {
         // Suppression des components
         remove(discardButton);
         remove(drawButton);
@@ -193,5 +208,7 @@ public class SkyjoView extends HorizontalLayout {
         initBoard();
         initDeck();
         initDiscardPile();
+
+        board.printPlayersFields();
     }
 }

@@ -16,26 +16,17 @@ public class SkyjoPlayerField {
         return playerNum;
     }
 
-    public void setPlayerNum(int playerNum) {
-        this.playerNum = playerNum;
-    }
-
     public SkyjoCard[][] getField() {
         return field;
-    }
-
-    public void setField(SkyjoCard[][] field) {
-        this.field = field;
     }
 
     public SkyjoPlayerFieldComponent getFieldComponent() {
         return new SkyjoPlayerFieldComponent(this);
     }
 
-    public SkyjoCard changeCard(int col, int row, SkyjoCard card) {
+    public void changeCard(int col, int row, SkyjoCard card) {
         card.setVisible(true);
         field[col][row] = card;
-        return card;
     }
 
     public boolean checkForClearColumn(int column) {
@@ -65,7 +56,7 @@ public class SkyjoPlayerField {
         }
 
         SkyjoCard[] discarded = field[col];
-        setField(newField);
+        this.field = newField;
 
         return discarded;
     }
