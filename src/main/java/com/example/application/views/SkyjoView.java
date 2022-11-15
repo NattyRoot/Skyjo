@@ -9,7 +9,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @PageTitle("Skyjo")
@@ -25,15 +24,25 @@ public class SkyjoView extends HorizontalLayout {
         board = new SkyjoBoard(2);
 
         /** FIELD EVENTS **/
-        board.getPlayersField().forEach(this::initBoard);
-        playerFieldsComponents = board.getPlayersField().stream().map(SkyjoPlayerField::getFieldComponent).toList();
-        add(playerFieldsComponents.toArray(new SkyjoPlayerFieldComponent[0]));
+        initBoard();
         /** DRAW EVENT **/
         initDeck();
         /** DISCARD EVENT**/
         initDiscardPile();
     }
 
+    /**
+     * Initialise le board des joueurs
+     */
+    private void initBoard() {
+        board.getPlayersField().forEach(this::initPlayerField);
+        playerFieldsComponents = board.getPlayersField().stream().map(SkyjoPlayerField::getFieldComponent).toList();
+        add(playerFieldsComponents.toArray(new SkyjoPlayerFieldComponent[0]));
+    }
+
+    /**
+     * Initialise le deck du jeu avec un bouton et un évement de click
+     */
     private void initDeck() {
         drawButton = new Button("DRAW");
 
@@ -51,6 +60,9 @@ public class SkyjoView extends HorizontalLayout {
         add(drawButton);
     }
 
+    /**
+     * Initialise la pile de défausse du jeu en créant un bouton avec un évenement de click. La carte du dessus de la défausse est toujours visible
+     */
     private void initDiscardPile() {
         discardButton = new Button();
         SkyjoCard topDiscardPile = board.getDiscardPile().getTopCard();
@@ -83,7 +95,20 @@ public class SkyjoView extends HorizontalLayout {
         add(discardButton);
     }
 
-    private void initBoard(SkyjoPlayerField playerField) {
+    /**
+     * Initialise un SkyjoPlayerField en ajoutant un évenement de click sur chaque boutons du joueur (1 bouton = 1 carte).
+     * Par défaut, les carte sont faces cachés (représenté par une couleur neutre et le texte '?').
+     * <br><br>
+     * Si une carte de la pioche a été préalablement sélectionné (stocké dans la variable 'selectedCard') : <br>
+     *      On défausse la carte du joueur et on met la carte de la pioche sur son emplacement<br><br>
+     * Si une carte de la défausse a été préalablement sélectionné (stocké dans la variable 'selectedCard') : <br>
+     *      On défausse la carte du joueur et on met la carte de la défausse sur son emplacement<br><br>
+     * Si aucune carte n'a été préalablement sélectionné (selectedCard == null) : <br>
+     *      On révèle la carte du joueur<br>
+     *
+     * @param playerField le SkyjoPlayerField à initialiser
+     */
+    private void initPlayerField(SkyjoPlayerField playerField) {
         // On ajoute un évenement sur chaque carte du joueur
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < playerField.getField().length; col++) {
@@ -142,12 +167,22 @@ public class SkyjoView extends HorizontalLayout {
         }
     }
 
+    /**
+     * Modifie le bouton afin d'ajouter la couleur et le texte de la carte
+     *
+     * @param button le bouton à modifier
+     * @param color la couleur à appliquer
+     * @param text le text à afficher
+     */
     private void setButtonStyle(Button button, String color, String text) {
         button.removeClassNames("color-purple", "color-blue", "color-green", "color-yellow", "color-red");
         button.setClassName("color-" + color);
         button.setText(text);
     }
 
+    /**
+     * Supprime puis ajoute les composant de la vue afin d'afficher les modifications
+     */
     private void reloadBoard() {
         // Suppression des components
         remove(discardButton);
@@ -155,10 +190,7 @@ public class SkyjoView extends HorizontalLayout {
         remove(playerFieldsComponents.toArray(new SkyjoPlayerFieldComponent[0]));
 
         // Réinitialisation des components
-        board.getPlayersField().forEach(this::initBoard);
-        playerFieldsComponents = board.getPlayersField().stream().map(SkyjoPlayerField::getFieldComponent).toList();
-        add(playerFieldsComponents.toArray(new SkyjoPlayerFieldComponent[0]));
-
+        initBoard();
         initDeck();
         initDiscardPile();
     }
