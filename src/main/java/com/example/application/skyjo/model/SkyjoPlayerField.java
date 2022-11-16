@@ -61,6 +61,20 @@ public class SkyjoPlayerField {
         return discarded;
     }
 
+    public int calculateScore() {
+        int result = 0;
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < field.length; col++) {
+                SkyjoCard card = field[col][row];
+                if (card.isVisible()) {
+                    result += card.getValue();
+                }
+            }
+        }
+
+        return result;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

@@ -9,7 +9,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.*;
 
 import java.util.List;
-import java.util.Map;
 
 @PageTitle("Skyjo")
 @Route(value = "skyjo/:playerCount?")
@@ -142,8 +141,6 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
                         } else {
                             // Rafraichissement de la carte
                             setButtonStyle(button, selectedCard.getColor(), selectedCard.toString());
-                            // Rafraichissement de toute la vue
-                            reloadView();
                         }
 
                         // Rafraichissement de la pioche et de la défausse
@@ -161,6 +158,8 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
                            clearColumn(playerField, currentColumn);
                         }
                     }
+                    // Rafraichissement de toute la vue
+                    reloadView();
                 });
                 card.setButton(button);
             }
@@ -178,8 +177,6 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
         for (SkyjoCard discarded : discardedCol) {
             board.getDiscardPile().discard(discarded);
         }
-        // Rafraichissement de toute la vue
-        reloadView();
     }
 
     /**

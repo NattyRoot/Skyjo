@@ -15,6 +15,7 @@ public class SkyjoPlayerFieldComponent extends Component {
     public SkyjoPlayerFieldComponent(SkyjoPlayerField playerField) {
         Element label = new Label("Player " + (playerField.getPlayerNum() + 1)).getElement();
         Element table = new Element("table");
+        Element score = new Label("Score = " + playerField.calculateScore()).getElement();
 
         for (int row = 0; row < 3; row++) {
             table.appendChild(new Element("tr"));
@@ -24,6 +25,6 @@ public class SkyjoPlayerFieldComponent extends Component {
             }
         }
 
-        getElement().appendChild(label).appendChild(table);
+        getElement().appendChild(label).appendChild(table).appendChild(score);
     }
 }
