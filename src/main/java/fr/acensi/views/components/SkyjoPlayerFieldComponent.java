@@ -25,6 +25,6 @@ public class SkyjoPlayerFieldComponent extends Component {
             }
         }
 
-        getElement().appendChild(label).appendChild(table).appendChild(score);
+        getElement().setAttribute("class", "playerField").appendChild(label).appendChild(table).appendChild(score);
     }
 }

@@ -1,11 +1,12 @@
 package fr.acensi.views;
 
+import com.vaadin.flow.component.HtmlComponent;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import fr.acensi.skyjo.model.SkyjoBoard;
 import fr.acensi.skyjo.model.SkyjoCard;
 import fr.acensi.skyjo.model.SkyjoPlayerField;
 import fr.acensi.views.components.SkyjoPlayerFieldComponent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.*;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 @PageTitle("Skyjo")
 @Route(value = "skyjo/:playerCount?")
-public class SkyjoView extends HorizontalLayout implements HasUrlParameter<String> {
+public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
     private SkyjoBoard board;
     private List<SkyjoPlayerFieldComponent> playerFieldsComponents;
     private Button drawButton;
@@ -37,9 +38,15 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
         Map<String, List<String>> parametersMap = queryParameters.getParameters();
         List<String> hasVarianteParameters = parametersMap.getOrDefault("variante", new ArrayList<>(Collections.singleton("false")));
 
-        hasVariante = !hasVarianteParameters.get(0).equals("false");
+        hasVariante = hasVarianteParameters.get(0).equals("true");
 
-        board = new SkyjoBoard(Integer.parseInt(playerCount));
+        try {
+            board = new SkyjoBoard(Integer.parseInt(playerCount));
+        } catch (NumberFormatException e) {
+            board = new SkyjoBoard(2);
+        }
+
+        setFlexWrap(FlexWrap.WRAP);
 
         /** FIELD EVENTS **/
         initBoard();
@@ -75,6 +82,8 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
             }
         });
 
+        drawButton.setClassName(drawButton.getClassName() + " boardButtons");
+
         add(drawButton);
     }
 
@@ -109,6 +118,8 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
                 }
             }
         });
+
+        discardButton.setClassName(discardButton.getClassName() + " boardButtons");
 
         add(discardButton);
     }

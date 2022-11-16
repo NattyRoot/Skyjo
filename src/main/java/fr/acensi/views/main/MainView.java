@@ -28,7 +28,7 @@ public class MainView extends HorizontalLayout {
         });
 
         setMargin(true);
-        setVerticalComponentAlignment(Alignment.END, start);
+        setVerticalComponentAlignment(Alignment.END, start, playerCountInput, hasVariantCheckbox);
 
         add(playerCountInput, hasVariantCheckbox, start);
     }

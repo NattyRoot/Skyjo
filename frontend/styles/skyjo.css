@@ -1,3 +1,11 @@
+.playerField {
+    padding: 10px;
+}
+
+.boardButtons {
+    margin: 5px;
+}
+
 .color-purple {
     background-color: #ff32ff;
 }
