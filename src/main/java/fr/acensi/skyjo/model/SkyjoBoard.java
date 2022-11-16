@@ -1,4 +1,4 @@
-package com.example.application.skyjo.model;
+package fr.acensi.skyjo.model;
 
 import java.util.ArrayList;
 import java.util.List;

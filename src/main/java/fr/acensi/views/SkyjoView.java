@@ -1,9 +1,9 @@
-package com.example.application.views;
+package fr.acensi.views;
 
-import com.example.application.skyjo.model.SkyjoBoard;
-import com.example.application.skyjo.model.SkyjoCard;
-import com.example.application.skyjo.model.SkyjoPlayerField;
-import com.example.application.views.components.SkyjoPlayerFieldComponent;
+import fr.acensi.skyjo.model.SkyjoBoard;
+import fr.acensi.skyjo.model.SkyjoCard;
+import fr.acensi.skyjo.model.SkyjoPlayerField;
+import fr.acensi.views.components.SkyjoPlayerFieldComponent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.*;

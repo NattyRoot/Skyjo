@@ -1,6 +1,6 @@
-package com.example.application.views.main;
+package fr.acensi.views.main;
 
-import com.example.application.views.SkyjoView;
+import fr.acensi.views.SkyjoView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;

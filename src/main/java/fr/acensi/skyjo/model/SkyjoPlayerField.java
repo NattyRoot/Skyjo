@@ -1,6 +1,6 @@
-package com.example.application.skyjo.model;
+package fr.acensi.skyjo.model;
 
-import com.example.application.views.components.SkyjoPlayerFieldComponent;
+import fr.acensi.views.components.SkyjoPlayerFieldComponent;
 
 public class SkyjoPlayerField {
     private int playerNum;

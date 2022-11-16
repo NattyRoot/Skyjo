@@ -1,7 +1,7 @@
-package com.example.application.views.components;
+package fr.acensi.views.components;
 
-import com.example.application.skyjo.model.SkyjoCard;
-import com.example.application.skyjo.model.SkyjoPlayerField;
+import fr.acensi.skyjo.model.SkyjoCard;
+import fr.acensi.skyjo.model.SkyjoPlayerField;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.CssImport;
