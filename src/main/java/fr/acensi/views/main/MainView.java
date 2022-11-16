@@ -1,5 +1,7 @@
 package fr.acensi.views.main;
 
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.router.QueryParameters;
 import fr.acensi.views.SkyjoView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -13,20 +15,22 @@ import com.vaadin.flow.router.Route;
 public class MainView extends HorizontalLayout {
 
     private IntegerField playerCountInput;
+    private Checkbox hasVariantCheckbox;
     private Button start;
 
     public MainView() {
         playerCountInput = new IntegerField("# joueurs :");
+        hasVariantCheckbox = new Checkbox("Variante");
         start = new Button("Start game");
 
         start.addClickListener(e -> {
-            UI.getCurrent().navigate(SkyjoView.class, String.valueOf(playerCountInput.getValue()));
+            UI.getCurrent().navigate(SkyjoView.class, String.valueOf(playerCountInput.getValue()), QueryParameters.of("variante", hasVariantCheckbox.getValue().toString()));
         });
 
         setMargin(true);
         setVerticalComponentAlignment(Alignment.END, start);
 
-        add(playerCountInput, start);
+        add(playerCountInput, hasVariantCheckbox, start);
     }
 
 }

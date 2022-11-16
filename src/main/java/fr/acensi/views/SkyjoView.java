@@ -8,7 +8,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @PageTitle("Skyjo")
 @Route(value = "skyjo/:playerCount?")
@@ -18,12 +21,24 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
     private Button drawButton;
     private Button discardButton;
     private SkyjoCard selectedCard;
+    private boolean hasVariante;
+    private Integer skyjoCol;
+    private Integer skyjoRow;
 
     public SkyjoView() {
     }
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, String playerCount) {
+        Location location = beforeEvent.getLocation();
+        QueryParameters queryParameters = location
+                .getQueryParameters();
+
+        Map<String, List<String>> parametersMap = queryParameters.getParameters();
+        List<String> hasVarianteParameters = parametersMap.getOrDefault("variante", new ArrayList<>(Collections.singleton("false")));
+
+        hasVariante = !hasVarianteParameters.get(0).equals("false");
+
         board = new SkyjoBoard(Integer.parseInt(playerCount));
 
         /** FIELD EVENTS **/
@@ -128,39 +143,55 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
                 }
 
                 button.addClickListener(event -> {
-                    if (selectedCard != null) {
-                        System.out.println("Changing value of [" + currentColumn + "][" + currentRow + "] to value " + selectedCard.getValue() + " for player " + playerField.getPlayerNum());
+                    if (!hasVariante || !event.isShiftKey()) {
+                        if (selectedCard != null) {
+                            System.out.println("Changing value of [" + currentColumn + "][" + currentRow + "] to value " + selectedCard.getValue() + " for player " + playerField.getPlayerNum());
 
-                        // Si une carte a été préalablement sélectionné, on remplace la carte du joueur
-                        playerField.changeCard(currentColumn, currentRow, selectedCard);
-                        // Et on ajoute cette carte remplacé sur le dessus de la défausse
-                        board.getDiscardPile().discard(card);
+                            // Si une carte a été préalablement sélectionné, on remplace la carte du joueur
+                            playerField.changeCard(currentColumn, currentRow, selectedCard);
+                            // Et on ajoute cette carte remplacé sur le dessus de la défausse
+                            board.getDiscardPile().discard(card);
 
-                        if (playerField.checkForClearColumn(currentColumn)) {
-                            clearColumn(playerField, currentColumn);
+                            if (playerField.checkForClearColumn(currentColumn)) {
+                                clearColumn(playerField, currentColumn);
+                            } else {
+                                // Rafraichissement de la carte
+                                setButtonStyle(button, selectedCard.getColor(), selectedCard.toString());
+                            }
+
+                            // Rafraichissement de la pioche et de la défausse
+                            setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString());
+                            setButtonStyle(drawButton, "", "DRAW");
+
+                            // Il n'y a plus de carte sélectionnée
+                            selectedCard = null;
                         } else {
-                            // Rafraichissement de la carte
-                            setButtonStyle(button, selectedCard.getColor(), selectedCard.toString());
+                            // Si aucune carte n'a été selectionné alors le joueur a pioché puis décidé de défausser la carte
+                            // On doit donc réveler une de nos carte
+                            card.setVisible(true);
+
+                            if (playerField.checkForClearColumn(currentColumn)) {
+                                clearColumn(playerField, currentColumn);
+                            }
                         }
-
-                        // Rafraichissement de la pioche et de la défausse
-                        setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString());
-                        setButtonStyle(drawButton, "", "DRAW");
-
-                        // Il n'y a plus de carte sélectionnée
-                        selectedCard = null;
+                        // Rafraichissement de toute la vue
+                        reloadView();
                     } else {
-                        // Si aucune carte n'a été selectionné alors le joueur a pioché puis décidé de défausser la carte
-                        // On doit donc réveler une de nos carte
-                        card.setVisible(true);
+                        if (skyjoCol == null ||skyjoRow == null) {
+                            skyjoCol = currentColumn;
+                            skyjoRow = currentRow;
+                        } else {
+                            swapCards(playerField, currentColumn, currentRow);
 
-                        if (playerField.checkForClearColumn(currentColumn)) {
-                           clearColumn(playerField, currentColumn);
+                            skyjoCol = null;
+                            skyjoRow = null;
+
+                            reloadView();
                         }
                     }
-                    // Rafraichissement de toute la vue
-                    reloadView();
                 });
+
+
                 card.setButton(button);
             }
         }
@@ -177,6 +208,14 @@ public class SkyjoView extends HorizontalLayout implements HasUrlParameter<Strin
         for (SkyjoCard discarded : discardedCol) {
             board.getDiscardPile().discard(discarded);
         }
+    }
+
+    private void swapCards(SkyjoPlayerField playerField, int col, int row) {
+        SkyjoCard[][] cards = playerField.getField();
+        SkyjoCard swapCard = cards[skyjoCol][skyjoRow];
+
+        playerField.changeCard(skyjoCol, skyjoRow, cards[col][row]);
+        playerField.changeCard(col, row, swapCard);
     }
 
     /**
