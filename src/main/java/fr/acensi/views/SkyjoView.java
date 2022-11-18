@@ -2,14 +2,12 @@ package fr.acensi.views;
 
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import fr.acensi.skyjo.business.SkyjoLogic;
-import fr.acensi.skyjo.model.SkyjoPlayerField;
 import fr.acensi.views.components.SkyjoPlayerFieldComponent;
 import com.vaadin.flow.router.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @PageTitle("Skyjo")
 @Route(value = "skyjo/:playerCount?")
@@ -24,47 +22,38 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
      * Méthode hérité de l'interface HasUrlParameters.
      * On ne connait pas les paramêtres d'URL avant d'arriver dans cette méthode (donc après le contructeur), on doit donc initialiser les composants ici
      *
-     * @param beforeEvent evenement BeforeEvent
+     * @param beforeEvent          evenement BeforeEvent
      * @param playerCountParameter le parametre d'URL représentant le nombre de joueur (ex: http://localhost:8080/skyjo/5, playerCount = 5)
      */
     @Override
     public void setParameter(BeforeEvent beforeEvent, String playerCountParameter) {
-        Location location = beforeEvent.getLocation();
-        QueryParameters queryParameters = location
-                .getQueryParameters();
+        setFlexWrap(FlexWrap.WRAP);
 
-        Map<String, List<String>> parametersMap = queryParameters.getParameters();
-        List<String> hasVarianteParameters = parametersMap.getOrDefault("variante", new ArrayList<>(Collections.singleton("false")));
+        // Récupération du parametre "variante" dans les Query parameters
+        hasVariante = getQueryParameter(
+            beforeEvent,
+            "variante",
+            new ArrayList<>(Collections.singleton("false"))
+        ).equals("true");
 
-        hasVariante = hasVarianteParameters.get(0).equals("true");
-
+        // Récupération du parametre "playerCount" dans l'URL
         try {
             playerCount = Integer.parseInt(playerCountParameter);
         } catch (NumberFormatException e) {
             playerCount = 2;
         }
 
+        // Création du board à partir du nombre de joueurs
         SkyjoLogic.createBoard(playerCount);
 
-        setFlexWrap(FlexWrap.WRAP);
-
-        /* FIELD EVENTS */
-        SkyjoLogic.initBoard(this, hasVariante);
-        /* DRAW EVENT */
-        SkyjoLogic.initDeck();
-        /* DISCARD EVENT */
-        SkyjoLogic.initDiscardPile();
-
-        // Addin components
-        add(SkyjoLogic.getPlayerFieldsComponents().toArray(new SkyjoPlayerFieldComponent[0]));
-        add(SkyjoLogic.getDrawButton());
-        add(SkyjoLogic.getDiscardButton());
+        // Chargement des composants dans la vue
+        loadView();
     }
 
     /**
      * Supprime puis ajoute les composant de la vue afin d'afficher les modifications
      */
-    public void reloadView(int playerNum) {
+    public void refreshView(int playerNum) {
         // Passage au joueur suivant
         SkyjoLogic.getBoard().getPlayersField().forEach(playerField -> playerField.setHisTurn(playerNum + 1, playerCount));
 
@@ -73,6 +62,13 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
         remove(SkyjoLogic.getDrawButton());
         remove(SkyjoLogic.getPlayerFieldsComponents().toArray(new SkyjoPlayerFieldComponent[0]));
 
+        loadView();
+    }
+
+    /**
+     * Initialise les composants et les ajoutent à la vue
+     */
+    public void loadView() {
         // BOARD
         SkyjoLogic.initBoard(this, hasVariante);
         // DRAW
@@ -84,7 +80,17 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
         add(SkyjoLogic.getPlayerFieldsComponents().toArray(new SkyjoPlayerFieldComponent[0]));
         add(SkyjoLogic.getDrawButton());
         add(SkyjoLogic.getDiscardButton());
+    }
 
-        SkyjoLogic.printPlayersFields();
+    /**
+     * Récupère un paramètre de requête identifié par la clé "key"
+     *
+     * @param event        l'évenement
+     * @param key          la clé du paramètre
+     * @param defaultValue la valeur par défaut si rien n'est retrouvé
+     * @return la valeur du paramètre de requête recherché
+     */
+    private String getQueryParameter(BeforeEvent event, String key, List<String> defaultValue) {
+        return event.getLocation().getQueryParameters().getParameters().getOrDefault(key, defaultValue).get(0);
     }
 }

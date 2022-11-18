@@ -38,6 +38,11 @@ public class SkyjoLogic {
         board.printPlayersFields();
     }
 
+    /**
+     * Créé le board à partir du nombre de joueurs
+     *
+     * @param playerCount le nombre de joueurs
+     */
     public static void createBoard(int playerCount) {
         board = new SkyjoBoard(playerCount);
     }
@@ -112,7 +117,7 @@ public class SkyjoLogic {
                             }
                         }
                         // Rafraichissement de toute la vue
-                        view.reloadView(playerField.getPlayerNum());
+                        view.refreshView(playerField.getPlayerNum());
                     } else {
                         if (skyjoCol == null ||skyjoRow == null) {
                             skyjoCol = currentColumn;
@@ -123,7 +128,7 @@ public class SkyjoLogic {
                             skyjoCol = null;
                             skyjoRow = null;
 
-                            view.reloadView(playerField.getPlayerNum());
+                            view.refreshView(playerField.getPlayerNum());
                         }
                     }
                 });

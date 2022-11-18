@@ -29,10 +29,9 @@ public class SkyjoBoard {
         this.discardPile = new SkyjoDiscardPile();
         this.playersField = new ArrayList<>();
 
+        // Distribution des cartes à chaque joueurs
         deal(playerCount);
-
-        printPlayersFields();
-
+        // Ajout de la première carte de la pioche dans la défausse
         discardPile.discard(deck.draw());
     }
 
@@ -54,6 +53,9 @@ public class SkyjoBoard {
         }
     }
 
+    /**
+     * Remet les cartes de la défausse dans la pioche à l'exception de la première puis mélange le deck
+     */
     public void turnDiscardPileIntoDeck() {
         // Garde la dernière carte de la défausse
         SkyjoCard topDiscard = SkyjoLogic.getBoard().getDiscardPile().draw();
