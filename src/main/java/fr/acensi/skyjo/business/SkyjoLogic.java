@@ -85,7 +85,7 @@ public class SkyjoLogic {
                             System.out.println("Changing value of [" + currentColumn + "][" + currentRow + "] to value " + selectedCard.getValue() + " for " + playerField.getPlayerName());
 
                             // Si une carte a été préalablement sélectionné, on remplace la carte du joueur
-                            playerField.changeCard(currentColumn, currentRow, selectedCard);
+                            playerField.changeCard(currentColumn, currentRow, selectedCard, true);
                             // Et on ajoute cette carte remplacé sur le dessus de la défausse
                             board.getDiscardPile().discard(card);
 
@@ -145,6 +145,12 @@ public class SkyjoLogic {
                 // Si on a déjà selectionné une carte, on ne peut pas la remettre dans la pioche
                 System.out.println("Action impossible");
             } else {
+                // Si la pioche est vide alors on transforme la défausse en pioche
+                if (SkyjoLogic.getBoard().getDeck().getCards().isEmpty()) {
+                    System.out.println("La pioche est vide, on retourne la défausse");
+                    SkyjoLogic.getBoard().turnDiscardPileIntoDeck();
+                    System.out.println("La défausse a été transformé en pioche");
+                }
                 // On sélectionne la carte de la pioche et on la retourne
                 selectedCard = board.getDeck().draw();
                 setButtonStyle(drawButton, selectedCard.getColor(), selectedCard.toString());
@@ -213,8 +219,8 @@ public class SkyjoLogic {
         SkyjoCard[][] cards = playerField.getField();
         SkyjoCard swapCard = cards[skyjoCol][skyjoRow];
 
-        playerField.changeCard(skyjoCol, skyjoRow, cards[col][row]);
-        playerField.changeCard(col, row, swapCard);
+        playerField.changeCard(skyjoCol, skyjoRow, cards[col][row], false);
+        playerField.changeCard(col, row, swapCard, false);
     }
 
     /**

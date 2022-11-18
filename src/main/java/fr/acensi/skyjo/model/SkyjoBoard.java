@@ -1,5 +1,7 @@
 package fr.acensi.skyjo.model;
 
+import fr.acensi.skyjo.business.SkyjoLogic;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,19 @@ public class SkyjoBoard {
             }
             playersField.add(new SkyjoPlayerField(playerNum, cards));
         }
+    }
+
+    public void turnDiscardPileIntoDeck() {
+        // Garde la dernière carte de la défausse
+        SkyjoCard topDiscard = SkyjoLogic.getBoard().getDiscardPile().draw();
+        // Met dans le deck toutes les cartes de la défausse
+        SkyjoLogic.getBoard().getDeck().setCards(new ArrayList<>(SkyjoLogic.getBoard().getDiscardPile().getCards()));
+        // Mélange le deck
+        SkyjoLogic.getBoard().getDeck().shuffle();
+        // Vide la défausse
+        SkyjoLogic.getBoard().getDiscardPile().empty();
+        // Remet la dernière carte dans la défausse
+        SkyjoLogic.getBoard().getDiscardPile().discard(topDiscard);
     }
 
     /**

@@ -10,6 +10,10 @@ public class SkyjoDiscardPile {
         cards = Collections.asLifoQueue(new ArrayDeque<>());
     }
 
+    public Queue<SkyjoCard> getCards() {
+        return cards;
+    }
+
     /**
      * Récupère et supprime la première carte de la défausse
      *
@@ -39,5 +43,9 @@ public class SkyjoDiscardPile {
             topCard.setVisible(true);
         }
         return topCard;
+    }
+
+    public void empty() {
+        cards = Collections.asLifoQueue(new ArrayDeque<>());
     }
 }

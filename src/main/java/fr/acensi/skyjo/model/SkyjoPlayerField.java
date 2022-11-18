@@ -35,8 +35,10 @@ public class SkyjoPlayerField {
     }
 
 
-    public void changeCard(int col, int row, SkyjoCard card) {
-        card.setVisible(true);
+    public void changeCard(int col, int row, SkyjoCard card, boolean showCard) {
+        if (showCard) {
+            card.setVisible(true);
+        }
         field[col][row] = card;
     }
 
@@ -94,6 +96,7 @@ public class SkyjoPlayerField {
             case 3 -> "Thibault";
             case 4 -> "Maël";
             case 5 -> "Mathieu";
+            case 6 -> "Yann";
             default -> "Player " + (playerNum + 1);
         };
     }

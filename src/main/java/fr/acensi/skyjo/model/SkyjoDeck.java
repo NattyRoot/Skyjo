@@ -1,6 +1,7 @@
 package fr.acensi.skyjo.model;
 
 import com.vaadin.flow.component.button.Button;
+import fr.acensi.skyjo.business.SkyjoLogic;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,14 @@ public class SkyjoDeck {
     public SkyjoDeck() {
         createDeck();
         shuffle();
+    }
+
+    public List<SkyjoCard> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<SkyjoCard> cards) {
+        this.cards = cards;
     }
 
     public SkyjoCard draw() {
