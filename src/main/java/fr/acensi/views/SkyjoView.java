@@ -2,6 +2,7 @@ package fr.acensi.views;
 
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import fr.acensi.skyjo.business.SkyjoLogic;
+import fr.acensi.skyjo.model.SkyjoPlayerField;
 import fr.acensi.views.components.SkyjoPlayerFieldComponent;
 import com.vaadin.flow.router.*;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 @Route(value = "skyjo/:playerCount?")
 public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
     private boolean hasVariante;
+    private int playerCount;
 
     public SkyjoView() {
     }
@@ -35,7 +37,6 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
         List<String> hasVarianteParameters = parametersMap.getOrDefault("variante", new ArrayList<>(Collections.singleton("false")));
 
         hasVariante = hasVarianteParameters.get(0).equals("true");
-        int playerCount;
 
         try {
             playerCount = Integer.parseInt(playerCountParameter);
@@ -63,7 +64,10 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
     /**
      * Supprime puis ajoute les composant de la vue afin d'afficher les modifications
      */
-    public void reloadView() {
+    public void reloadView(int playerNum) {
+        // Passage au joueur suivant
+        SkyjoLogic.getBoard().getPlayersField().forEach(playerField -> playerField.setHisTurn(playerNum + 1, playerCount));
+
         // Suppression des components
         remove(SkyjoLogic.getDiscardButton());
         remove(SkyjoLogic.getDrawButton());

@@ -112,7 +112,7 @@ public class SkyjoLogic {
                             }
                         }
                         // Rafraichissement de toute la vue
-                        view.reloadView();
+                        view.reloadView(playerField.getPlayerNum());
                     } else {
                         if (skyjoCol == null ||skyjoRow == null) {
                             skyjoCol = currentColumn;
@@ -123,7 +123,7 @@ public class SkyjoLogic {
                             skyjoCol = null;
                             skyjoRow = null;
 
-                            view.reloadView();
+                            view.reloadView(playerField.getPlayerNum());
                         }
                     }
                 });

@@ -13,7 +13,12 @@ import com.vaadin.flow.dom.Element;
 @CssImport("./styles/skyjo.css")
 public class SkyjoPlayerFieldComponent extends Component {
     public SkyjoPlayerFieldComponent(SkyjoPlayerField playerField) {
-        Element label = new Label("Player " + playerField.getPlayerName()).getElement();
+        Label label = new Label("Player " + playerField.getPlayerName());
+
+        if (playerField.isHisTurn()){
+            label.setClassName("color-red");
+        }
+
         Element table = new Element("table");
         Element score = new Label("Score = " + playerField.calculateScore()).getElement();
 
@@ -25,6 +30,6 @@ public class SkyjoPlayerFieldComponent extends Component {
             }
         }
 
-        getElement().setAttribute("class", "playerField").appendChild(label).appendChild(table).appendChild(score);
+        getElement().setAttribute("class", "playerField").appendChild(label.getElement()).appendChild(table).appendChild(score);
     }
 }

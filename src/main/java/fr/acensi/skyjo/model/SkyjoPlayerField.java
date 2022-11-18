@@ -4,12 +4,26 @@ import fr.acensi.views.components.SkyjoPlayerFieldComponent;
 
 public class SkyjoPlayerField {
     private final int playerNum;
+    private boolean hisTurn;
     private SkyjoCard[][] field;
-
 
     public SkyjoPlayerField(int playerNum, SkyjoCard[][] field) {
         this.playerNum = playerNum;
         this.field = field;
+    }
+
+    public int getPlayerNum() {
+        return playerNum;
+    }
+    public boolean isHisTurn() {
+        return hisTurn;
+    }
+
+    public void setHisTurn(int player, int max) {
+        if (player == max) {
+            player = 0;
+        }
+        hisTurn = playerNum == player;
     }
 
     public SkyjoCard[][] getField() {
@@ -19,6 +33,7 @@ public class SkyjoPlayerField {
     public SkyjoPlayerFieldComponent getFieldComponent() {
         return new SkyjoPlayerFieldComponent(this);
     }
+
 
     public void changeCard(int col, int row, SkyjoCard card) {
         card.setVisible(true);
