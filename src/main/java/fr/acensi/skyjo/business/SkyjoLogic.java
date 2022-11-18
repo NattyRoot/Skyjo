@@ -100,12 +100,12 @@ public class SkyjoLogic {
                                 clearColumn(playerField, currentColumn);
                             } else {
                                 // Rafraichissement de la carte
-                                setButtonStyle(button, selectedCard.getColor(), selectedCard.toString());
+                                setButtonStyle(button, selectedCard.getColor(), selectedCard.toString(), "");
                             }
 
                             // Rafraichissement de la pioche et de la défausse
-                            setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString());
-                            setButtonStyle(drawButton, "", "DRAW");
+                            setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString(), "boardButtons");
+                            setButtonStyle(drawButton, "", "!", "boardButtons");
 
                             // Il n'y a plus de carte sélectionnée
                             selectedCard = null;
@@ -145,7 +145,7 @@ public class SkyjoLogic {
      * Initialise le deck du jeu avec un bouton et un évement de click
      */
     public static void initDeck() {
-        drawButton = new Button("DRAW");
+        drawButton = new Button("!");
 
         drawButton.addClickListener(event -> {
             if (selectedCard != null) {
@@ -158,7 +158,7 @@ public class SkyjoLogic {
                 }
                 // On sélectionne la carte de la pioche et on la retourne
                 selectedCard = board.getDeck().draw();
-                setButtonStyle(drawButton, selectedCard.getColor(), selectedCard.toString());
+                setButtonStyle(drawButton, selectedCard.getColor(), selectedCard.toString(), "boardButtons");
             }
         });
 
@@ -171,7 +171,7 @@ public class SkyjoLogic {
     public static void initDiscardPile() {
         discardButton = new Button();
         SkyjoCard topDiscardPile = board.getDiscardPile().getTopCard();
-        setButtonStyle(discardButton, topDiscardPile.getColor(), topDiscardPile.toString());
+        setButtonStyle(discardButton, topDiscardPile.getColor(), topDiscardPile.toString(), "boardButtons");
 
         discardButton.addClickListener(event -> {
             if (selectedCard != null) {
@@ -179,8 +179,8 @@ public class SkyjoLogic {
                 board.getDiscardPile().discard(selectedCard);
 
                 // On rafraichit l'affichage de la défausse et de la pioche
-                setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString());
-                setButtonStyle(drawButton, "", "DRAW");
+                setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString(), "boardButtons");
+                setButtonStyle(drawButton, "", "!", "boardButtons");
 
                 // Il n'y a plus de carte selectionné
                 selectedCard = null;
@@ -190,9 +190,9 @@ public class SkyjoLogic {
 
                 // On rafaichit
                 if (board.getDiscardPile().getTopCard() == null) {
-                    setButtonStyle(discardButton, "", "EMPTY");
+                    setButtonStyle(discardButton, "", "EMPTY", "boardButtons");
                 } else {
-                    setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString());
+                    setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString(), "boardButtons");
                 }
             }
         });
@@ -235,9 +235,9 @@ public class SkyjoLogic {
      * @param color la couleur à appliquer
      * @param text le text à afficher
      */
-    private static void setButtonStyle(Button button, String color, String text) {
-        button.removeClassNames("color-purple", "color-blue", "color-green", "color-yellow", "color-red");
-        button.setClassName("color-" + color);
+    private static void setButtonStyle(Button button, String color, String text, String otherClasses) {
+        button.removeClassNames("boardButtons", "color-purple", "color-blue", "color-green", "color-yellow", "color-red");
+        button.setClassName(otherClasses + " color-" + color);
         button.setText(text);
     }
 }
