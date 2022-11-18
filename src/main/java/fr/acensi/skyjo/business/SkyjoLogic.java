@@ -34,6 +34,10 @@ public class SkyjoLogic {
         return discardButton;
     }
 
+    /**
+     * DEBUG USE ONLY<br>
+     * Affiche le board de chaque joueurs
+     */
     public static void printPlayersFields() {
         board.printPlayersFields();
     }
@@ -87,8 +91,6 @@ public class SkyjoLogic {
                 button.addClickListener(event -> {
                     if (!hasVariante || !event.isShiftKey()) {
                         if (selectedCard != null) {
-                            System.out.println("Changing value of [" + currentColumn + "][" + currentRow + "] to value " + selectedCard.getValue() + " for " + playerField.getPlayerName());
-
                             // Si une carte a été préalablement sélectionné, on remplace la carte du joueur
                             playerField.changeCard(currentColumn, currentRow, selectedCard, true);
                             // Et on ajoute cette carte remplacé sur le dessus de la défausse
@@ -152,9 +154,7 @@ public class SkyjoLogic {
             } else {
                 // Si la pioche est vide alors on transforme la défausse en pioche
                 if (SkyjoLogic.getBoard().getDeck().getCards().isEmpty()) {
-                    System.out.println("La pioche est vide, on retourne la défausse");
                     SkyjoLogic.getBoard().turnDiscardPileIntoDeck();
-                    System.out.println("La défausse a été transformé en pioche");
                 }
                 // On sélectionne la carte de la pioche et on la retourne
                 selectedCard = board.getDeck().draw();

@@ -45,13 +45,11 @@ public class SkyjoPlayerField {
     public boolean checkForClearColumn(int column) {
         for (int row = 0; row < 3; row++) {
             if (field[column][row].getValue() != field[column][0].getValue()) {
-                System.out.println(field[column][row] + " does not equal " + field[column][0]);
                 return false;
             } else if (!field[column][row].isVisible()) {
                 return false;
             }
         }
-        System.out.println("SKYJO !");
         return true;
     }
 
@@ -77,8 +75,8 @@ public class SkyjoPlayerField {
     public int calculateScore() {
         int result = 0;
         for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < field.length; col++) {
-                SkyjoCard card = field[col][row];
+            for (SkyjoCard[] skyjoCards : field) {
+                SkyjoCard card = skyjoCards[row];
                 if (card.isVisible()) {
                     result += card.getValue();
                 }
