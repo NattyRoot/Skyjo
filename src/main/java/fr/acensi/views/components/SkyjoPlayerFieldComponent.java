@@ -13,7 +13,7 @@ import com.vaadin.flow.dom.Element;
 @CssImport("./styles/skyjo.css")
 public class SkyjoPlayerFieldComponent extends Component {
     public SkyjoPlayerFieldComponent(SkyjoPlayerField playerField) {
-        Element label = new Label("Player " + (playerField.getPlayerNum() + 1)).getElement();
+        Element label = new Label("Player " + playerField.getPlayerName()).getElement();
         Element table = new Element("table");
         Element score = new Label("Score = " + playerField.calculateScore()).getElement();
 

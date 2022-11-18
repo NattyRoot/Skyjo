@@ -3,17 +3,13 @@ package fr.acensi.skyjo.model;
 import fr.acensi.views.components.SkyjoPlayerFieldComponent;
 
 public class SkyjoPlayerField {
-    private int playerNum;
+    private final int playerNum;
     private SkyjoCard[][] field;
 
 
     public SkyjoPlayerField(int playerNum, SkyjoCard[][] field) {
         this.playerNum = playerNum;
         this.field = field;
-    }
-
-    public int getPlayerNum() {
-        return playerNum;
     }
 
     public SkyjoCard[][] getField() {
@@ -75,13 +71,25 @@ public class SkyjoPlayerField {
         return result;
     }
 
+    public String getPlayerName() {
+        return switch (playerNum) {
+            case 0 -> "Félix";
+            case 1 -> "Alexandre";
+            case 2 -> "Romain";
+            case 3 -> "Thibault";
+            case 4 -> "Maël";
+            case 5 -> "Mathieu";
+            default -> "Player " + (playerNum + 1);
+        };
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("----------------------------------------------------------\nPlayer ").append(playerNum).append(": \n");
+        builder.append(getPlayerName()).append(": \n");
         for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < field.length; col++) {
-                builder.append(" ").append(field[col][row]).append(" ");
+            for (SkyjoCard[] skyjoCards : field) {
+                builder.append(skyjoCards[row]).append(" ");
             }
             builder.append("\n");
         }
