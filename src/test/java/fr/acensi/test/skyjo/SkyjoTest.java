@@ -1,5 +1,8 @@
 package fr.acensi.test.skyjo;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.button.Button;
 import fr.acensi.skyjo.business.SkyjoLogic;
 import fr.acensi.views.SkyjoView;
 import org.junit.Assert;
@@ -25,17 +28,19 @@ public class SkyjoTest {
         SkyjoLogic.initDiscardPile();
     }
 
-    /**
-     * https://stackoverflow.com/questions/74490232/how-can-i-simulate-a-shift-click-on-a-vaadin-button
-     */
     @Test
-    @Ignore
     public void whenSwapping_thenFieldHasChanged() {
         int expected = SkyjoLogic.getBoard().getPlayersField().get(0).getField()[0][0].getValue();
 
-        // Echange des cartes [0, 0] et [0, 1]
-        SkyjoLogic.swapCards(SkyjoLogic.getBoard().getPlayersField().get(0), 0, 1);
+        Button button1 = SkyjoLogic.getBoard().getPlayersField().get(0).getField()[0][0].getButton();
+        Button button2 = SkyjoLogic.getBoard().getPlayersField().get(0).getField()[0][1].getButton();
 
+        // Le premier Shift + click sur un bouton enregistre l'index de colonne et de ligne du premier bouton
+        ComponentUtil.fireEvent(button1, new ClickEvent<>(button1, false, 0, 0, 0, 0, 0, 0, false, true, false, false));
+        // Le deuxième Shift + click swap les deux cartes
+        ComponentUtil.fireEvent(button2, new ClickEvent<>(button2, false, 0, 0, 0, 0, 0, 0, false, true, false, false));
+
+        // Après avoir échangé les cartes, la valeur qui était en [0, 0] doit maintenant se trouver en [0, 1]
         Assert.assertEquals(expected, SkyjoLogic.getBoard().getPlayersField().get(0).getField()[0][1].getValue());
     }
 
