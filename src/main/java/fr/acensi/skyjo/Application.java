@@ -1,4 +1,4 @@
-package fr.acensi;
+package fr.acensi.skyjo;
 
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;

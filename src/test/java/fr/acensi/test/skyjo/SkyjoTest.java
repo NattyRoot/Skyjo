@@ -5,7 +5,7 @@ import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.button.Button;
 import fr.acensi.skyjo.business.SkyjoLogic;
 import fr.acensi.skyjo.model.SkyjoCard;
-import fr.acensi.views.SkyjoView;
+import fr.acensi.skyjo.ui.views.SkyjoView;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

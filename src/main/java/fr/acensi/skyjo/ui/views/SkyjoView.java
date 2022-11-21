@@ -1,8 +1,8 @@
-package fr.acensi.views;
+package fr.acensi.skyjo.ui.views;
 
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import fr.acensi.skyjo.business.SkyjoLogic;
-import fr.acensi.views.components.SkyjoPlayerFieldComponent;
+import fr.acensi.skyjo.ui.components.SkyjoPlayerFieldComponent;
 import com.vaadin.flow.router.*;
 
 import java.util.ArrayList;
@@ -14,9 +14,6 @@ import java.util.List;
 public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
     private boolean hasVariante;
     private int playerCount;
-
-    public SkyjoView() {
-    }
 
     /**
      * Méthode hérité de l'interface HasUrlParameters.

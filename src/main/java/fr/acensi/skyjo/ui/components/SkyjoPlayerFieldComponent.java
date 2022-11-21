@@ -1,4 +1,4 @@
-package fr.acensi.views.components;
+package fr.acensi.skyjo.ui.components;
 
 import fr.acensi.skyjo.model.SkyjoCard;
 import fr.acensi.skyjo.model.SkyjoPlayerField;

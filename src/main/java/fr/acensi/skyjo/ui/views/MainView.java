@@ -1,8 +1,7 @@
-package fr.acensi.views.main;
+package fr.acensi.skyjo.ui.views;
 
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.router.QueryParameters;
-import fr.acensi.views.SkyjoView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;

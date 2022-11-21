@@ -4,8 +4,8 @@ import com.vaadin.flow.component.button.Button;
 import fr.acensi.skyjo.model.SkyjoBoard;
 import fr.acensi.skyjo.model.SkyjoCard;
 import fr.acensi.skyjo.model.SkyjoPlayerField;
-import fr.acensi.views.SkyjoView;
-import fr.acensi.views.components.SkyjoPlayerFieldComponent;
+import fr.acensi.skyjo.ui.views.SkyjoView;
+import fr.acensi.skyjo.ui.components.SkyjoPlayerFieldComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -211,7 +211,7 @@ public class SkyjoLogic {
      */
     public static void deal(int playerCount) {
         List<SkyjoPlayerField> fields = new ArrayList<>();
-        
+
         // Rempli les deck ligne par ligne en alternant les joueurs
         for (int playerNum = 0; playerNum < playerCount; playerNum++) {
             SkyjoCard[][] cards = new SkyjoCard[4][3];
