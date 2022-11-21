@@ -43,8 +43,8 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
             playerCount = 2;
         }
 
-        // Création du board à partir du nombre de joueurs
-        SkyjoLogic.createBoard(playerCount);
+        // Initialisation du board
+        SkyjoLogic.initBoard(playerCount);
 
         // Chargement des composants dans la vue
         loadView();
@@ -70,7 +70,7 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
      */
     public void loadView() {
         // BOARD
-        SkyjoLogic.initBoard(this, hasVariante);
+        SkyjoLogic.initFields(this, hasVariante);
         // DRAW
         SkyjoLogic.initDeck();
         // DISCARD

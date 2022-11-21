@@ -4,15 +4,15 @@ import com.vaadin.flow.component.button.Button;
 
 public class SkyjoCard {
     private int value;
-    private boolean visible;
     private String color;
+    private boolean visible;
     private Button button;
 
     public SkyjoCard(int value, String color, Button button) {
         this.value = value;
         this.color = color;
-        this.button = button;
         this.visible = false;
+        this.button = button;
     }
 
     public int getValue() {
@@ -23,12 +23,12 @@ public class SkyjoCard {
         this.value = value;
     }
 
-    public Button getButton() {
-        return button;
+    public String getColor() {
+        return color;
     }
 
-    public void setButton(Button button) {
-        this.button = button;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public boolean isVisible() {
@@ -41,14 +41,13 @@ public class SkyjoCard {
         this.button.setText(this.toString());
     }
 
-    public String getColor() {
-        return color;
+    public Button getButton() {
+        return button;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setButton(Button button) {
+        this.button = button;
     }
-
     @Override
     public String toString() {
         return value + "";

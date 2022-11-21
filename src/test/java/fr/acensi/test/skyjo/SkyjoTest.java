@@ -4,7 +4,6 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.button.Button;
 import fr.acensi.skyjo.business.SkyjoLogic;
-import fr.acensi.skyjo.model.SkyjoBoard;
 import fr.acensi.skyjo.model.SkyjoCard;
 import fr.acensi.views.SkyjoView;
 import org.junit.Assert;
@@ -23,8 +22,8 @@ public class SkyjoTest {
     public SkyjoTest() {
         view = Mockito.mock(SkyjoView.class);
 
-        SkyjoLogic.createBoard(2);
-        SkyjoLogic.initBoard(view, true);
+        SkyjoLogic.initBoard(2);
+        SkyjoLogic.initFields(view, true);
         SkyjoLogic.initDeck();
         SkyjoLogic.initDiscardPile();
     }
@@ -117,7 +116,7 @@ public class SkyjoTest {
         int expected = card.getValue();
 
         // On retoure la défausse mais on laisse la dernière carte ajoutée
-        SkyjoLogic.getBoard().turnDiscardPileIntoDeck();
+        SkyjoLogic.recycleDiscardPile();
 
         // Il n'y a plus qu'une seule carte dans la défausse
         Assert.assertEquals(1, SkyjoLogic.getBoard().getDiscardPile().getCards().size());
@@ -131,16 +130,16 @@ public class SkyjoTest {
     @Test
     public void whenCreatingBoard_thenFieldIsCreatedForEachPlayers() {
         // On créé un board pour deux personnes
-        SkyjoLogic.createBoard(2);
+        SkyjoLogic.initBoard(2);
         // On a donc deux playerFields
         Assert.assertEquals(2, SkyjoLogic.getBoard().getPlayersField().size());
 
         // On créé un board pour 10 personnes
-        SkyjoLogic.createBoard(10);
+        SkyjoLogic.initBoard(10);
         // On a donc 10 playerFields
         Assert.assertEquals(10, SkyjoLogic.getBoard().getPlayersField().size());
 
         // On ne peut pas créer de board pour 99 personnes car il n'y a que 150 cartes disponibles
-        Assert.assertThrows(IndexOutOfBoundsException.class, () -> SkyjoLogic.createBoard(99));
+        Assert.assertThrows(IndexOutOfBoundsException.class, () -> SkyjoLogic.initBoard(99));
     }
 }

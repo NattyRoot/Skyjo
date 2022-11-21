@@ -7,6 +7,7 @@ import fr.acensi.skyjo.model.SkyjoPlayerField;
 import fr.acensi.views.SkyjoView;
 import fr.acensi.views.components.SkyjoPlayerFieldComponent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SkyjoLogic {
@@ -47,14 +48,21 @@ public class SkyjoLogic {
      *
      * @param playerCount le nombre de joueurs
      */
-    public static void createBoard(int playerCount) {
+    public static void initBoard(int playerCount) {
+        // Création du board à partir du nombre de joueurs
         board = new SkyjoBoard(playerCount);
+
+        // Distribution des cartes à chaque joueurs
+        deal(playerCount);
+
+        // Ajout de la première carte de la pioche dans la défausse
+        getBoard().getDiscardPile().discard(getBoard().getDeck().draw());
     }
 
     /**
-     * Initialise le board de tous les joueurs
+     * Initialise le field de tous les joueurs
      */
-    public static void initBoard(SkyjoView view, boolean hasVariante) {
+    public static void initFields(SkyjoView view, boolean hasVariante) {
         board.getPlayersField().forEach(playerField -> SkyjoLogic.initPlayerField(playerField, view, hasVariante));
         playerFieldsComponents = board.getPlayersField().stream().map(SkyjoPlayerField::getFieldComponent).toList();
     }
@@ -149,10 +157,11 @@ public class SkyjoLogic {
             } else {
                 // Si la pioche est vide alors on transforme la défausse en pioche
                 if (SkyjoLogic.getBoard().getDeck().getCards().isEmpty()) {
-                    SkyjoLogic.getBoard().turnDiscardPileIntoDeck();
+                    recycleDiscardPile();
                 }
                 // On sélectionne la carte de la pioche et on la retourne
                 selectedCard = board.getDeck().draw();
+                selectedCard.setVisible(true);
                 setButtonStyle(drawButton, selectedCard, "boardButtons");
             }
         });
@@ -196,6 +205,28 @@ public class SkyjoLogic {
     }
 
     /**
+     * Distribue les cartes de chaques joueurs
+     *
+     * @param playerCount nombre de joueur dans la partie
+     */
+    public static void deal(int playerCount) {
+        List<SkyjoPlayerField> fields = new ArrayList<>();
+        
+        // Rempli les deck ligne par ligne en alternant les joueurs
+        for (int playerNum = 0; playerNum < playerCount; playerNum++) {
+            SkyjoCard[][] cards = new SkyjoCard[4][3];
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 4; col++) {
+                    cards[col][row] = getBoard().getDeck().draw();
+                }
+            }
+            fields.add(new SkyjoPlayerField(playerNum, cards));
+        }
+
+        getBoard().setPlayersField(fields);
+    }
+
+    /**
      * Lorsqu'une colonne contient 3 carte identique, on la supprime du field
      *
      * @param playerField le player field à modifier
@@ -221,6 +252,22 @@ public class SkyjoLogic {
 
         playerField.changeCard(skyjoCol, skyjoRow, cards[col][row], false);
         playerField.changeCard(col, row, swapCard, false);
+    }
+
+    /**
+     * Remet les cartes de la défausse dans la pioche à l'exception de la première puis mélange le deck
+     */
+    public static void recycleDiscardPile() {
+        // Garde la dernière carte de la défausse
+        SkyjoCard topDiscard = getBoard().getDiscardPile().draw();
+        // Met dans le deck toutes les cartes de la défausse
+        getBoard().getDeck().setCards(new ArrayList<>(getBoard().getDiscardPile().getCards()));
+        // Mélange le deck
+        getBoard().getDeck().shuffle();
+        // Vide la défausse
+        getBoard().getDiscardPile().empty();
+        // Remet la dernière carte dans la défausse
+        getBoard().getDiscardPile().discard(topDiscard);
     }
 
     /**
