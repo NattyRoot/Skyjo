@@ -1,9 +1,9 @@
 package fr.acensi.skyjo.ui.views;
 
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import fr.acensi.skyjo.business.SkyjoLogic;
-import fr.acensi.skyjo.ui.components.SkyjoPlayerFieldComponent;
 import com.vaadin.flow.router.*;
+import fr.acensi.skyjo.ui.components.SkyjoBoardComponent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,8 @@ import java.util.List;
 
 @PageTitle("Skyjo")
 @Route(value = "skyjo/:playerCount?")
-public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
+public class SkyjoView extends VerticalLayout implements HasUrlParameter<String> {
+    private static SkyjoBoardComponent boardComponent;
     private boolean hasVariante;
     private int playerCount;
 
@@ -24,8 +25,6 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
      */
     @Override
     public void setParameter(BeforeEvent beforeEvent, String playerCountParameter) {
-        setFlexWrap(FlexWrap.WRAP);
-
         // Récupération du parametre "variante" dans les Query parameters
         hasVariante = getQueryParameter(
             beforeEvent,
@@ -54,10 +53,8 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
         // Passage au joueur suivant
         SkyjoLogic.getBoard().getPlayersField().forEach(playerField -> playerField.setHisTurn(playerNum + 1, playerCount));
 
-        // Suppression des components
-        remove(SkyjoLogic.getDiscardButton());
-        remove(SkyjoLogic.getDrawButton());
-        remove(SkyjoLogic.getPlayerFieldsComponents().toArray(new SkyjoPlayerFieldComponent[0]));
+        // Suppression du component
+        remove(boardComponent);
 
         loadView();
     }
@@ -66,17 +63,17 @@ public class SkyjoView extends FlexLayout implements HasUrlParameter<String> {
      * Initialise les composants et les ajoutent à la vue
      */
     public void loadView() {
-        // BOARD
+        // FIELDS
         SkyjoLogic.initFields(this, hasVariante);
         // DRAW
         SkyjoLogic.initDeck();
         // DISCARD
         SkyjoLogic.initDiscardPile();
+        // BOARD
+        boardComponent = new SkyjoBoardComponent(SkyjoLogic.getBoard().getPlayersField(), SkyjoLogic.getDrawButton(), SkyjoLogic.getDiscardButton());
 
-        // Adding components
-        add(SkyjoLogic.getPlayerFieldsComponents().toArray(new SkyjoPlayerFieldComponent[0]));
-        add(SkyjoLogic.getDrawButton());
-        add(SkyjoLogic.getDiscardButton());
+        // Ajout du component
+        add(boardComponent);
     }
 
     /**

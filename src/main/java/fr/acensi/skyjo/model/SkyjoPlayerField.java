@@ -1,7 +1,5 @@
 package fr.acensi.skyjo.model;
 
-import fr.acensi.skyjo.ui.components.SkyjoPlayerFieldComponent;
-
 public class SkyjoPlayerField {
     private final int playerNum;
     private boolean hisTurn;
@@ -28,10 +26,6 @@ public class SkyjoPlayerField {
 
     public SkyjoCard[][] getField() {
         return field;
-    }
-
-    public SkyjoPlayerFieldComponent getFieldComponent() {
-        return new SkyjoPlayerFieldComponent(this);
     }
 
 

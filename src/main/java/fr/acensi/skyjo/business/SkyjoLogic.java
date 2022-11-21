@@ -5,14 +5,12 @@ import fr.acensi.skyjo.model.SkyjoBoard;
 import fr.acensi.skyjo.model.SkyjoCard;
 import fr.acensi.skyjo.model.SkyjoPlayerField;
 import fr.acensi.skyjo.ui.views.SkyjoView;
-import fr.acensi.skyjo.ui.components.SkyjoPlayerFieldComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SkyjoLogic {
     private static SkyjoBoard board;
-    private static List<SkyjoPlayerFieldComponent> playerFieldsComponents;
     private static Button drawButton;
     private static Button discardButton;
     private static SkyjoCard selectedCard;
@@ -21,10 +19,6 @@ public class SkyjoLogic {
 
     public static SkyjoBoard getBoard() {
         return board;
-    }
-
-    public static List<SkyjoPlayerFieldComponent> getPlayerFieldsComponents() {
-        return playerFieldsComponents;
     }
 
     public static Button getDrawButton() {
@@ -64,7 +58,6 @@ public class SkyjoLogic {
      */
     public static void initFields(SkyjoView view, boolean hasVariante) {
         board.getPlayersField().forEach(playerField -> SkyjoLogic.initPlayerField(playerField, view, hasVariante));
-        playerFieldsComponents = board.getPlayersField().stream().map(SkyjoPlayerField::getFieldComponent).toList();
     }
 
     /**
