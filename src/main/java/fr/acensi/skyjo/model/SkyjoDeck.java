@@ -1,7 +1,6 @@
 package fr.acensi.skyjo.model;
 
 import com.vaadin.flow.component.button.Button;
-import fr.acensi.skyjo.business.SkyjoLogic;
 
 import java.util.ArrayList;
 import java.util.Collections;

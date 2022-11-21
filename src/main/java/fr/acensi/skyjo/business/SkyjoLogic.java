@@ -62,7 +62,7 @@ public class SkyjoLogic {
      * Initialise le field de tous les joueurs
      */
     public static void initFields(SkyjoView view, boolean hasVariante) {
-        board.getPlayersField().forEach(playerField -> SkyjoLogic.initPlayerField(playerField, view, hasVariante));
+        board.getPlayersField().forEach(playerField -> initPlayerField(playerField, view, hasVariante));
     }
 
     /**
@@ -154,7 +154,7 @@ public class SkyjoLogic {
                 System.out.println("Action impossible");
             } else {
                 // Si la pioche est vide alors on transforme la défausse en pioche
-                if (SkyjoLogic.getBoard().getDeck().getCards().isEmpty()) {
+                if (getBoard().getDeck().getCards().isEmpty()) {
                     recycleDiscardPile();
                 }
                 // On sélectionne la carte de la pioche et on la retourne
@@ -298,11 +298,11 @@ public class SkyjoLogic {
 
     private static String generateRandomName(int playerNum) {
         // Si il n'y a plus de noms dispo
-        if (SkyjoLogic.possibleNames.isEmpty()) {
+        if (possibleNames.isEmpty()) {
             return "Player " + playerNum;
         }
 
-        int rng = new Random().nextInt(SkyjoLogic.possibleNames.size());
+        int rng = new Random().nextInt(possibleNames.size());
         return possibleNames.remove(rng);
     }
 }

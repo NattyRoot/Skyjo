@@ -1,8 +1,8 @@
 package fr.acensi.skyjo.ui.views;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import fr.acensi.skyjo.business.SkyjoLogic;
 import com.vaadin.flow.router.*;
+import fr.acensi.skyjo.business.SkyjoLogic;
 import fr.acensi.skyjo.ui.components.SkyjoBoardComponent;
 
 import java.util.ArrayList;

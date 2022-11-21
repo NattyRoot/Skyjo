@@ -1,6 +1,8 @@
 package fr.acensi.skyjo.model;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Queue;
 
 public class SkyjoDiscardPile {
     private Queue<SkyjoCard> cards;
