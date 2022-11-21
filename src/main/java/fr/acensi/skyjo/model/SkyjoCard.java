@@ -37,7 +37,7 @@ public class SkyjoCard {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-        this.button.setClassName("color-" + this.color);
+        this.button.setClassName(this.button.getClassName() + " color-" + this.color);
         this.button.setText(this.toString());
     }
 

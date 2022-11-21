@@ -37,46 +37,23 @@ public class SkyjoDeck {
         cards = new ArrayList<>();
 
         for(int cardValue = -2; cardValue <= 12; cardValue++) {
-            int quantity;
+            int quantity = switch (cardValue) {
+                case -2 -> 5;
+                case 0 -> 15;
+                default -> 10;
+            };
 
-            switch(cardValue) {
-                case -2:
-                    quantity = 5;
-                    break;
-                case 0:
-                    quantity = 15;
-                    break;
-                default:
-                    quantity = 10;
-            }
-
-            String color;
-            switch (cardValue) {
-                case -2:
-                case -1:
-                    color = "purple";
-                    break;
-                case 0:
-                    color = "blue";
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    color = "green";
-                    break;
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                    color = "yellow";
-                    break;
-                default:
-                    color = "red";
-            }
+            String color = switch (cardValue) {
+                case -2, -1 -> "purple";
+                case 0 -> "blue";
+                case 1, 2, 3, 4 -> "green";
+                case 5, 6, 7, 8 -> "yellow";
+                default -> "red";
+            };
 
             for (int cardQuantity = 0; cardQuantity < quantity; cardQuantity++) {
                 Button button = new Button("?");
+                button.setClassName("card");
                 SkyjoCard card = new SkyjoCard(cardValue, color, button);
                 cards.add(card);
             }

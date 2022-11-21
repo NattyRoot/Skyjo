@@ -81,12 +81,7 @@ public class SkyjoLogic {
                 SkyjoCard card = playerField.getField()[col][row];
                 Button button = new Button();
 
-                if (card.isVisible()) {
-                    button.setClassName("color-" + card.getColor());
-                    button.setText(card.toString());
-                } else {
-                    button.setText("?");
-                }
+                setButtonStyle(button, card, "");
 
                 button.addClickListener(event -> {
                     if (!hasVariante || !event.isShiftKey()) {
@@ -100,11 +95,11 @@ public class SkyjoLogic {
                                 clearColumn(playerField, currentColumn);
                             } else {
                                 // Rafraichissement de la carte
-                                setButtonStyle(button, selectedCard.getColor(), selectedCard.toString(), "");
+                                setButtonStyle(button, selectedCard, "");
                             }
 
                             // Rafraichissement de la pioche et de la défausse
-                            setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString(), "boardButtons");
+                            setButtonStyle(discardButton, board.getDiscardPile().getTopCard(), "boardButtons");
                             setButtonStyle(drawButton, "", "!", "boardButtons");
 
                             // Il n'y a plus de carte sélectionnée
@@ -158,11 +153,11 @@ public class SkyjoLogic {
                 }
                 // On sélectionne la carte de la pioche et on la retourne
                 selectedCard = board.getDeck().draw();
-                setButtonStyle(drawButton, selectedCard.getColor(), selectedCard.toString(), "boardButtons");
+                setButtonStyle(drawButton, selectedCard, "boardButtons");
             }
         });
 
-        drawButton.setClassName(drawButton.getClassName() + " boardButtons");
+        setButtonStyle(drawButton, "", "!", "boardButtons");
     }
 
     /**
@@ -170,8 +165,8 @@ public class SkyjoLogic {
      */
     public static void initDiscardPile() {
         discardButton = new Button();
-        SkyjoCard topDiscardPile = board.getDiscardPile().getTopCard();
-        setButtonStyle(discardButton, topDiscardPile.getColor(), topDiscardPile.toString(), "boardButtons");
+
+        setButtonStyle(discardButton, board.getDiscardPile().getTopCard(), "boardButtons");
 
         discardButton.addClickListener(event -> {
             if (selectedCard != null) {
@@ -179,7 +174,7 @@ public class SkyjoLogic {
                 board.getDiscardPile().discard(selectedCard);
 
                 // On rafraichit l'affichage de la défausse et de la pioche
-                setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString(), "boardButtons");
+                setButtonStyle(discardButton, board.getDiscardPile().getTopCard(), "boardButtons");
                 setButtonStyle(drawButton, "", "!", "boardButtons");
 
                 // Il n'y a plus de carte selectionné
@@ -192,12 +187,12 @@ public class SkyjoLogic {
                 if (board.getDiscardPile().getTopCard() == null) {
                     setButtonStyle(discardButton, "", "EMPTY", "boardButtons");
                 } else {
-                    setButtonStyle(discardButton, board.getDiscardPile().getTopCard().getColor(), board.getDiscardPile().getTopCard().toString(), "boardButtons");
+                    setButtonStyle(discardButton, board.getDiscardPile().getTopCard(), "boardButtons");
                 }
             }
         });
 
-        discardButton.setClassName(discardButton.getClassName() + " boardButtons");
+        setButtonStyle(discardButton, board.getDiscardPile().getTopCard(), "boardButtons");
     }
 
     /**
@@ -229,6 +224,21 @@ public class SkyjoLogic {
     }
 
     /**
+     * Modifie le style du bouton si la carte associé est visible
+     *
+     * @param button Le bouton à modifier
+     * @param card La carte associé
+     * @param otherClasses les autres classes CSS à ajouter
+     */
+    private static void setButtonStyle(Button button, SkyjoCard card, String otherClasses) {
+        if (card.isVisible()) {
+            setButtonStyle(button, card.getColor(), card.toString(), otherClasses);
+        } else {
+            setButtonStyle(button, "", "?", otherClasses);
+        }
+    }
+
+    /**
      * Modifie le bouton afin d'ajouter la couleur et le texte de la carte
      *
      * @param button le bouton à modifier
@@ -236,8 +246,8 @@ public class SkyjoLogic {
      * @param text le text à afficher
      */
     private static void setButtonStyle(Button button, String color, String text, String otherClasses) {
-        button.removeClassNames("boardButtons", "color-purple", "color-blue", "color-green", "color-yellow", "color-red");
-        button.setClassName(otherClasses + " color-" + color);
+        button.removeClassNames("card", "boardButtons", "color-purple", "color-blue", "color-green", "color-yellow", "color-red");
+        button.setClassName(otherClasses + " card color-" + color);
         button.setText(text);
     }
 }

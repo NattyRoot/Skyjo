@@ -25,3 +25,7 @@
 .color-red {
     background-color: red;
 }
+
+.card {
+    height: 90px;
+}
