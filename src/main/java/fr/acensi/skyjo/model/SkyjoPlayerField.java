@@ -2,17 +2,24 @@ package fr.acensi.skyjo.model;
 
 public class SkyjoPlayerField {
     private final int playerNum;
+    private String playerName;
     private boolean hisTurn;
     private SkyjoCard[][] field;
 
-    public SkyjoPlayerField(int playerNum, SkyjoCard[][] field) {
+    public SkyjoPlayerField(int playerNum, String playerName, SkyjoCard[][] field) {
         this.playerNum = playerNum;
         this.field = field;
+        this.playerName = playerName;
     }
 
     public int getPlayerNum() {
         return playerNum;
     }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
     public boolean isHisTurn() {
         return hisTurn;
     }
@@ -78,19 +85,6 @@ public class SkyjoPlayerField {
         }
 
         return result;
-    }
-
-    public String getPlayerName() {
-        return switch (playerNum) {
-            case 0 -> "Félix";
-            case 1 -> "Alexandre";
-            case 2 -> "Romain";
-            case 3 -> "Thibault";
-            case 4 -> "Maël";
-            case 5 -> "Mathieu";
-            case 6 -> "Yann";
-            default -> "Player " + (playerNum + 1);
-        };
     }
 
     @Override

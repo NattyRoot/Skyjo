@@ -8,6 +8,7 @@ import fr.acensi.skyjo.ui.views.SkyjoView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class SkyjoLogic {
     private static SkyjoBoard board;
@@ -16,6 +17,7 @@ public class SkyjoLogic {
     private static SkyjoCard selectedCard;
     private static Integer skyjoCol;
     private static Integer skyjoRow;
+    private static List<String> possibleNames = new ArrayList<>(List.of("Félix", "Alexandre", "Romain", "Thibault", "Maël", "Mathieu", "Yann"));
 
     public static SkyjoBoard getBoard() {
         return board;
@@ -43,6 +45,9 @@ public class SkyjoLogic {
      * @param playerCount le nombre de joueurs
      */
     public static void initBoard(int playerCount) {
+        //Reset des noms
+        possibleNames = new ArrayList<>(List.of("Félix", "Alexandre", "Romain", "Thibault", "Maël", "Mathieu", "Yann"));
+
         // Création du board à partir du nombre de joueurs
         board = new SkyjoBoard(playerCount);
 
@@ -213,7 +218,7 @@ public class SkyjoLogic {
                     cards[col][row] = getBoard().getDeck().draw();
                 }
             }
-            fields.add(new SkyjoPlayerField(playerNum, cards));
+            fields.add(new SkyjoPlayerField(playerNum, generateRandomName(playerNum), cards));
         }
 
         getBoard().setPlayersField(fields);
@@ -289,5 +294,15 @@ public class SkyjoLogic {
         button.removeClassNames("card", "boardButtons", "color-purple", "color-blue", "color-green", "color-yellow", "color-red");
         button.setClassName(otherClasses + " card color-" + color);
         button.setText(text);
+    }
+
+    private static String generateRandomName(int playerNum) {
+        // Si il n'y a plus de noms dispo
+        if (SkyjoLogic.possibleNames.isEmpty()) {
+            return "Player " + playerNum;
+        }
+
+        int rng = new Random().nextInt(SkyjoLogic.possibleNames.size());
+        return possibleNames.remove(rng);
     }
 }
